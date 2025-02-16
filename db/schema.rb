@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_16_175633) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_16_215702) do
   create_table "basic_auths", force: :cascade do |t|
     t.string "username"
     t.string "password_digest"
@@ -24,7 +24,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_16_175633) do
     t.integer "sold_supply", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "business_owner_id"
+    t.index ["business_owner_id"], name: "index_business_entities_on_business_owner_id"
     t.index ["name"], name: "index_business_entities_on_name", unique: true
+  end
+
+  create_table "business_owners", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "buyers", force: :cascade do |t|
