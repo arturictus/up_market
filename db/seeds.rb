@@ -8,10 +8,20 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-[
+owners = [ { name: "John Doe" } ].map do |attrs|
+    BusinessOwner.find_or_create_by!(attrs)
+end
+
+entities = [
    { name: "Acme ltd", share_supply: 100, sold_supply: 0 },
    { name: "Apple inc.", share_supply: 200, sold_supply: 0 },
    { name: "Rockets inc.", share_supply: 300, sold_supply: 0 }
-].each do |business_entity|
-    BusinessEntity.find_or_create_by!(business_entity)
+].map do |attrs|
+    BusinessEntity.find_or_create_by!(attrs.merge(business_owner: owners.sample))
+end
+
+buyer = Buyer.create_with_basic_auth!(name: "John Doe", username: "test", password: "password")
+
+orders = [ { shares: 10, price_per_share: 10 }, { shares: 20, price_per_share: 20 } ].each do |attrs|
+    Order.create_order!(buyer: buyer, business_entity: entities.sample, **attrs)
 end
