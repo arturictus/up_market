@@ -27,4 +27,19 @@ class BusinessEntityTest < ActiveSupport::TestCase
     business_entity_duplicate = BusinessEntity.new(name: "Acme ltd", share_supply: 100, sold_supply: 0)
     assert_not business_entity_duplicate.save, "Saved the business entity with a duplicate name"
   end
+
+  test "should not save business entity with negative share supply" do
+    business_entity = BusinessEntity.new(name: "Acme ltd", share_supply: -100, sold_supply: 0)
+    assert_not business_entity.save, "Saved the business entity with a negative share supply"
+  end
+
+  test "should not save business entity with negative sold supply" do
+    business_entity = BusinessEntity.new(name: "Acme ltd", share_supply: 100, sold_supply: -100)
+    assert_not business_entity.save, "Saved the business entity with a negative sold supply"
+  end
+
+  test "should not save business entity with sold supply greater than share supply" do
+    business_entity = BusinessEntity.new(name: "Acme ltd", share_supply: 100, sold_supply: 101)
+    assert_not business_entity.save, "Saved the business entity with a sold supply greater than share supply"
+  end
 end
