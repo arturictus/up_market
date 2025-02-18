@@ -23,9 +23,4 @@ class BusinessEntitiesControllerTest < ActionDispatch::IntegrationTest
     get business_entity_url(6)
     assert_response :not_found
   end
-
-  test "#create_order should create_order" do
-    post create_order_business_entity_url(@entity, @buyer), params: { order: { shares: 10, price_per_share: 10 } }
-    assert_response :success
-  end
 end

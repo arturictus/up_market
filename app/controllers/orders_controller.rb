@@ -14,7 +14,7 @@ class OrdersController < ApplicationController
     if order = Order.create(order_params())
       render json: { data: order }, status: :created
     else
-      render json: { error: "Order could not be placed", data: nil }, status: :unprocessable_entity
+      render json: { error: "Order could not be placed", data: nil, errors: order.errors }, status: :unprocessable_entity
     end
   end
 
@@ -23,7 +23,7 @@ class OrdersController < ApplicationController
     if @order.execute
       render json: { data: @order }, status: :ok
     else
-      render json: { error: "Order could not be executed", data: nil }, status: :unprocessable_entity
+      render json: { error: "Order could not be executed", data: nil, errors: @order.errors }, status: :unprocessable_entity
     end
   end
 
