@@ -4,7 +4,7 @@ class BusinessEntitiesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @owner = BusinessOwner.create!(name: "John Doe")
     @entity = BusinessEntity.create!(name: "Acme ltd", share_supply: 100, sold_supply: 0, business_owner: @owner)
-    @buyer = Buyer.create_with_basic_auth!(name: "John Doe", username: "test", password: "password")
+    @buyer = Buyer.create!(name: "John Doe")
     @credentials = ActionController::HttpAuthentication::Basic.encode_credentials("test", "password")
   end
 

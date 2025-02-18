@@ -11,13 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.0].define(version: 2025_02_16_215702) do
-  create_table "basic_auths", force: :cascade do |t|
-    t.string "username"
-    t.string "password_digest"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "business_entities", force: :cascade do |t|
     t.string "name", null: false
     t.integer "share_supply", null: false
@@ -36,11 +29,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_16_215702) do
   end
 
   create_table "buyers", force: :cascade do |t|
-    t.string "name"
-    t.integer "basic_auth_id", null: false
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["basic_auth_id"], name: "index_buyers_on_basic_auth_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -55,7 +46,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_16_215702) do
     t.index ["buyer_id"], name: "index_orders_on_buyer_id"
   end
 
-  add_foreign_key "buyers", "basic_auths"
   add_foreign_key "orders", "business_entities"
   add_foreign_key "orders", "buyers"
 end

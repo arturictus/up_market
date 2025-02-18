@@ -20,7 +20,7 @@ entities = [
     BusinessEntity.find_or_create_by!(attrs.merge(business_owner: owners.sample))
 end
 
-buyer = Buyer.create_with_basic_auth!(name: "John Doe", username: "test", password: "password")
+buyer = Buyer.create!(name: "John Doe")
 
 orders = [ { shares: 10, price_per_share: 10 }, { shares: 20, price_per_share: 20 } ].each do |attrs|
     Order.create_order!(buyer: buyer, business_entity: entities.sample, **attrs)
