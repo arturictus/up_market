@@ -8,6 +8,8 @@ class BusinessEntity < ApplicationRecord
   belongs_to :business_owner
   has_many :orders
 
+  scope :with_remaining_supply, -> { where("share_supply > sold_supply") }
+
   def remaining_supply
     share_supply - sold_supply
   end
