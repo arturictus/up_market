@@ -3,6 +3,16 @@ class Order < ApplicationRecord
   belongs_to :business_entity
   validates_presence_of :shares, :price_per_share
   validates_inclusion_of :executed, in: [ true, false ]
+  validates_numericality_of :shares, greater_than: 0
+  validates_numericality_of :price_per_share, greater_than: 0
+
+  def execute
+    execute!
+    true
+  rescue
+    errors.add(:base, "Order could not be executed")
+    false
+  end
 
   def execute!
     transaction do

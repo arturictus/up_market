@@ -1,5 +1,4 @@
 class OrdersController < ApplicationController
-  before_action :get_business_entity, only: [ :create ]
   def index
     search = OrdersSearch.from_params(params)
     if search.filter
@@ -10,8 +9,8 @@ class OrdersController < ApplicationController
   end
 
   def create
-    get_buyer()
-    if order = Order.create(order_params())
+    order = Order.new(order_params())
+    if order.save
       render json: { data: order }, status: :created
     else
       render json: { error: "Order could not be placed", data: nil, errors: order.errors }, status: :unprocessable_entity
@@ -29,15 +28,7 @@ class OrdersController < ApplicationController
 
   private
 
-  def get_business_entity
-    @business = BusinessEntity.find(params.expect(:business_id))
-  end
-
-  def get_buyer
-    @buyer = Buyer.find(params.expect(:buyer_id))
-  end
-
   def order_params
-    params.require(:order).permit(:shares, :price_per_share, buyer_id: @buyer.id, business_entity_id: @business.id)
+    params.expect(order: [ :shares, :price_per_share, :buyer_id, :business_entity_id ])
   end
 end

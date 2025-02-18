@@ -5,11 +5,11 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  resources :business_entities, only: [ :index, :show ] do
-    post "order/:buyer_id", on: :member, action: :create_order, as: :create_order
-  end
+  resources :business_entities, only: [ :index, :show ]
 
-  resources :orders, only: [ :index, :create ]
+  resources :orders, only: [ :index, :create ] do
+    patch "execute", on: :member, action: :execute, as: :execute
+  end
 
   # Defines the root path route ("/")
   # root "posts#index"

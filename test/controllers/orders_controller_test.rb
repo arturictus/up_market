@@ -9,9 +9,33 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "#index should get orders index" do
-    get orders_url
+    get orders_url, params: { business_entity_id: @order.business_entity.id }
     response = JSON.parse(@response.body)
     assert_equal @order.business_entity.id, response["data"][0]["business_entity_id"]
     assert_response :success
+  end
+
+  test "#create should create order" do
+    assert_difference("Order.count") do
+      post orders_url, params: { order: { buyer_id: @buyer.id, business_entity_id: @entity.id, shares: 10, price_per_share: 10 } }
+    end
+    assert_response :created
+  end
+
+  test "#create should not create order when errors" do
+    assert_no_difference("Order.count") do
+      post orders_url, params: { order: { buyer_id: @buyer.id, business_entity_id: @entity.id, shares: 10, price_per_share: -10 } }
+    end
+    response = JSON.parse(@response.body)
+    response.dig("errors", "price_per_share").each do |error|
+      assert_equal "must be greater than 0", error
+    end
+    assert_response :unprocessable_entity
+  end
+
+  test "#execute should execute order" do
+    patch execute_order_url(@order)
+    assert_response :success
+    assert Order.find(@order.id).executed
   end
 end
