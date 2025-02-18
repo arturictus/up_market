@@ -4,7 +4,7 @@ class Order < ApplicationRecord
   validates_presence_of :shares, :price_per_share
   validates_inclusion_of :executed, in: [ true, false ]
   validates_numericality_of :shares, greater_than: 0
-  validates_numericality_of :price_per_share, greater_than: 0
+  validates_numericality_of :price_per_share, greater_than: 1
 
   def execute
     execute!

@@ -1,6 +1,4 @@
 class BusinessEntitiesController < ApplicationController
-  before_action :get_business_entity, only: [ :show ]
-
   def index
     search = BusinessEntitiesSearch.from_params(params)
     if search.filter
@@ -11,12 +9,7 @@ class BusinessEntitiesController < ApplicationController
   end
 
   def show
-    render json: { data: { business_entity: @business, orders: @business.orders } }, status: :ok
-  end
-
-  private
-
-  def get_business_entity
-    @business = BusinessEntity.find(params.expect(:id))
+    business = BusinessEntity.includes(:orders).find(params.expect(:id))
+    render json: { data: { business_entity: business, orders: business.orders } }, status: :ok
   end
 end

@@ -32,7 +32,7 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
     end
     response = JSON.parse(@response.body)
     response.dig("errors", "price_per_share").each do |error|
-      assert_equal "must be greater than 0", error
+      assert_equal "must be greater than 1", error
     end
     assert_response :unprocessable_entity
   end
