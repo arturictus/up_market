@@ -2,8 +2,12 @@ class BusinessEntitiesController < ApplicationController
   before_action :get_business_entity, only: [ :show, :create_order ]
 
   def index
-    @businesses = BusinessEntity.with_remaining_supply().preload(:orders)
-    render json: { data: @businesses }, status: :ok
+    search = BusinessEntitiesSearch.from_params(params)
+    if search.filter
+      render json: { data: search.result }, status: :ok
+    else
+      render json: { error: "Invalid search parameters", data: [], errors: search.errors }, status: :unprocessable_entity
+    end
   end
 
   def show

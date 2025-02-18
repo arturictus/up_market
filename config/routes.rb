@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     post "order/:buyer_id", on: :member, action: :create_order, as: :create_order
   end
 
+  resources :orders, only: [ :index, :create ]
+
   # Defines the root path route ("/")
   # root "posts#index"
 end
