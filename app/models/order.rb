@@ -1,4 +1,7 @@
 class Order < ApplicationRecord
+  class AlreadyExecutedError < StandardError; end
+  class NotEnoughSharesError < StandardError; end
+
   belongs_to :buyer
   belongs_to :business_entity
   validates_presence_of :shares, :price_per_share
@@ -9,12 +12,20 @@ class Order < ApplicationRecord
   def execute
     execute!
     true
-  rescue
-    errors.add(:base, "Order could not be executed")
+  rescue => e
+    case e
+    when AlreadyExecutedError
+      errors.add(:base, "Order already executed")
+    when NotEnoughSharesError
+      errors.add(:base, "Not enough shares available")
+    else
+      errors.add(:base, "Order could not be executed")
+    end
     false
   end
 
   def execute!
+    raise AlreadyExecutedError, "Order already executed" if executed
     transaction do
       business_entity.with_lock do
         if business_entity.remaining_supply >= shares
@@ -23,7 +34,7 @@ class Order < ApplicationRecord
           self.executed = true
           save!
         else
-          raise "Not enough shares available"
+          raise NotEnoughSharesError, "Not enough shares available"
         end
       end
     end
@@ -34,7 +45,7 @@ class Order < ApplicationRecord
       if business_entity.remaining_supply > shares
         create!(buyer: buyer, business_entity: business_entity, shares: shares, price_per_share: price_per_share, executed: false)
       else
-        raise "Not enough shares available"
+        raise NotEnoughSharesError, "Not enough shares available"
       end
     end
   end
@@ -47,7 +58,7 @@ class Order < ApplicationRecord
           business_entity.save!
           create!(buyer: buyer, business_entity: business_entity, shares: shares, price_per_share: price_per_share, executed: true)
         else
-          raise "Not enough shares available"
+          raise NotEnoughSharesError, "Not enough shares available"
         end
       end
     end
