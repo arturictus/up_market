@@ -1,0 +1,204 @@
+{
+	"info": {
+		"_postman_id": "d31c9bcf-6ecb-4251-b7be-183d7be096ee",
+		"name": "Republic Exercise",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "94826"
+	},
+	"item": [
+		{
+			"name": "GET businesses",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/business_entities",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"business_entities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Business entities with remaining supply",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/business_entities?remaining_supply=true",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"business_entities"
+					],
+					"query": [
+						{
+							"key": "remaining_supply",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show Business Entity with orders",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/business_entities/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"business_entities",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET orders",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "GET orders search",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/orders?sort_by=price_per_share&sort_order=desc&business_entity_id=2",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"orders"
+					],
+					"query": [
+						{
+							"key": "sort_by",
+							"value": "price_per_share"
+						},
+						{
+							"key": "sort_order",
+							"value": "desc"
+						},
+						{
+							"key": "business_entity_id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST create order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"order\": {\n        \"buyer_id\": 1, \n        \"business_entity_id\": 1, \n        \"shares\": 10, \n        \"price_per_share\": 100 \n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/orders",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST create order Copy",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/orders/14/execute",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"orders",
+						"14",
+						"execute"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "password",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "test",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
